@@ -22,7 +22,7 @@ class ProductsController extends AbstractController
     
     public function index(ProductRepository $repository): Response
     {
-        $products = $this->repository->findAll();
+        $products = $this->repository->findLatest();
         return $this->render('products/products.html.twig', [
             'current_menu' => 'products'
         ]);

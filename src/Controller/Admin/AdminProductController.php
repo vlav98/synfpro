@@ -17,10 +17,12 @@ class AdminProductController extends AbstractController
     private $repository;
     private $em;
     
-    public function __construct(ProductRepository $repository, ObjectManager $em){
+    public function __construct(ProductRepository $repository, ObjectManager $em)
+    {
         $this->repository = $repository;
         $this->em = $em;
     }
+
     /**
      * @Route ("/admin", name="admin.product.index")
      * @return Response
@@ -38,8 +40,8 @@ class AdminProductController extends AbstractController
      * @param Request $request
      * @return Response
      */
-
-    public function new(Request $request) {
+    public function new(Request $request) 
+    {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -61,7 +63,6 @@ class AdminProductController extends AbstractController
      * @param Request $request
      * @return Response
      */
-
     public function edit(Product $product, Request $request): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -74,5 +75,15 @@ class AdminProductController extends AbstractController
             'product' => $product,
             'form' => $form->createView()
         ]);
+    }
+
+    public function delete(Product $product, Request $request)
+    {
+        if($this->isCsrfTokenValid('delete'.$product->getId(), $request->get('token'))) {
+            $this->em->remove($product);
+            $this->em-flush();
+        }
+
+        return $this->redirectToRoute('admin.product.index');
     }
 }
