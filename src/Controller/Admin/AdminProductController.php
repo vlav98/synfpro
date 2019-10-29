@@ -4,6 +4,7 @@ use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Product;
@@ -49,6 +50,7 @@ class AdminProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($product);
             $this->em->flush();
+            $this->addFlash('success', 'Bien créé avec succès');
             return $this->redirectToRoute('admin.product.index');
         }
         return $this->render('admin/product/new.html.twig', [
@@ -58,7 +60,7 @@ class AdminProductController extends AbstractController
     }
 
     /**
-     * @Route ("/admin/product/{id}", name="admin.product.edit")
+     * @Route ("/admin/product/{id}", name="admin.product.edit", methods="GET|POST")
      * @param Product $product
      * @param Request $request
      * @return Response
@@ -77,11 +79,18 @@ class AdminProductController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/product/{id}", name="admin.product.delete", methods="DELETE")
+     * @param Product $product
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function delete(Product $product, Request $request)
     {
-        if($this->isCsrfTokenValid('delete'.$product->getId(), $request->get('token'))) {
+        if($this->isCsrfTokenValid('delete'.$product->getId(), $request->get('_token'))) {
             $this->em->remove($product);
-            $this->em-flush();
+            $this->em->flush();
+            $this->addFlash('success', 'Bien supprimé avec succès');
         }
 
         return $this->redirectToRoute('admin.product.index');
