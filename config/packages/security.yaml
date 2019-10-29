@@ -12,7 +12,7 @@ security:
         main:
             anonymous: true
 
-            from_login: 
+            form_login: 
                 check_path: login
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -25,3 +25,6 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    encoders:
+        App\Entity\User: plaintext
