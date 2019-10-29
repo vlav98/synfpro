@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -39,6 +40,11 @@ class Product
     public function __construct()
     {
         $this->created_at = new \DateTime();
+    }
+
+    public function getSlug(): ?string 
+    {
+        return (new Slugify())->slugify($this->title);
     }
 
     public function getId(): ?int
