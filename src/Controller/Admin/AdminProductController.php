@@ -4,6 +4,9 @@ use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Product;
+use App\Form\ProductType;
+
 class AdminProductController extends AbstractController
 {
     /**
@@ -31,8 +34,12 @@ class AdminProductController extends AbstractController
      * @return Response
      */
 
-    public function edit(ProductRepository $repository): Response
+    public function edit(Product $product): Response
     {
-        return $this->render('admin/product/edit.html.twig', compact('products'));
+        $form = $this->createForm(ProductType::class, $product);
+        return $this->render('admin/product/edit.html.twig', [
+            'product' => $product,
+            'form' => $form->createView()
+        ]);
     }
 }
