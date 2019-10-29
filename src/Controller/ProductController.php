@@ -14,7 +14,7 @@ class ProductController extends AbstractController
      */
     public function index(): Response
     {   
-        return $this->render('product/index.html.twig', [
+        return $this->render('admin/product/index.html.twig', [
             'current_name' => 'products'
         ]);
     }
