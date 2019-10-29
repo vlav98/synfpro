@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title 'Admin' %}
 {% block body %}
 
 <div class="jumbotron text-center">
@@ -8,6 +9,9 @@
 
 <div class="container">
     <h2>Gerer les biens</h2>
+    {% for message in app.flashes('success') %}
+        
+    {% endfor %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -20,7 +24,12 @@
                 <tr>
                     <td>{{product.title}}</td>
                     <td>
-                        <a href="{{path('admin.product.edit', {id: product.id})}}" class="btn-secondary">Edit</a>
+                        <a href="{{path('admin.product.edit', {id: product.id})}}" class="btn btn-secondary">Edit</a>
+                        <form action="{{ path('admin.product.delete', {id: product.id}) }}" method="post" style="display: inline-block;" onsubmit="return confirm('Êtes-vous sûr ?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id )}}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
@@ -28,7 +37,7 @@
     </table>
 
     <div class="text-right">
-        <a href="{{path('admin.product.new')}}" class="btn-secondary">Créer un nouveau bien</a>
+        <a href="{{path('admin.product.new')}}" class="btn btn-secondary">Créer un nouveau bien</a>
     </div>
 </div>
 
