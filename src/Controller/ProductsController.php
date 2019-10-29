@@ -10,9 +10,11 @@ class ProductsController extends AbstractController
 {
     private $repository;
     
-    public function __construct(ProductRepository $repository){
+    public function __construct(ProductRepository $repository)
+    {
         $this->repository = $repository;
     }
+
     /**
      * @Route("/products", name="products.index")
      * @return Response

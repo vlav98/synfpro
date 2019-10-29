@@ -38,11 +38,13 @@ class Product
      */
     private $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \Datetime();
     }
 
-    public function getSlug(): ?string {
+    public function getSlug(): ?string 
+    {
         return (new Slugify())->slugify($this->title);
     }
 
